@@ -1,0 +1,24 @@
+- name: Oracle Playbook to get opatch list
+  hosts: oracle
+  become: yes
+  become_user: oracle
+  become_method: sudo 
+  become_flags: -i
+  tasks:
+  - name : Get Opatch Listing 
+    command: opatch  version
+    register: opatch_list
+  - debug :
+       var=opatch_list.stdout_lines
+  - name  : Check Db service Status 
+    shell : "ps -ef | grep smon | grep -v grep"
+    tags: install
+    register: db_status
+  - debug : 
+       var=db_status.stdout_lines
+  - name  : Check DB Listener Status
+    shell : "ps -ef | grep tnslsnr | grep -v grep"
+    tags: install
+    register: lis_status
+  - debug :
+       var=lis_status.stdout_lines

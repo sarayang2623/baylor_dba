@@ -1,0 +1,9 @@
+[oracle]
+ecl-orcldb-s01.ad.bcm.edu
+ecl-orcldb-s02.ad.bcm.edu
+[mysql]
+ecl-mysqdb-s01.ad.bcm.edu
+ecl-mysqdb-s02.ad.bcm.edu
+[mssql]
+ecw-sql1db-s05.ad.bcm.edu
+ecw-sql1db-s06.ad.bcm.edu

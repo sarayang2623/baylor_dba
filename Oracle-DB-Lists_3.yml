@@ -1,0 +1,37 @@
+- name: Oracle Playbook Startup Time for all databases 
+  hosts: oracle
+  become: yes
+  become_user: oracle
+  become_method: sudo 
+  become_flags: -i
+  vars:
+    oratab_path: /etc/oratab
+    sql_command: " SELECT host_name, instance_name,TO_CHAR(startup_time, 'DD-MM-YYYY HH24:MI:SS') startup_time,FLOOR(sysdate-startup_time) days FROM sys.v_$instance; "
+    output_file: /tmp/db_content.txt
+
+  tasks:
+    - name: Get list of Oracle instances from oratab file
+      shell: "grep -v ^# {{ oratab_path }} | cut -d: -f1"
+      register: sids_list
+    - name: Run SQL*Plus command
+      no_log: yes
+      shell: |
+        sqlplus -S / as sysdba << EOT 
+        set feedback off;
+        set heading off;
+        SET SERVEROUTPUT ON SIZE 5000;
+        SET LINESIZE 2500;
+        set pagesize 5000;
+        set long 5000;
+        SELECT host_name, instance_name,TO_CHAR(startup_time, 'DD-MM-YYYY HH24:MI:SS') startup_time,FLOOR(sysdate-startup_time) days FROM v\$instance; 
+               EOT;
+        exit; 
+      register: sql_output
+    - name: Save Output to a file
+      lineinfile: 
+          state: present
+          dest: "{{ output_file }}"
+          line: "{{ sql_output }}"
+          insertafter: EOF
+      loop: "{{ sids_list.stdout_lines }}"
+
