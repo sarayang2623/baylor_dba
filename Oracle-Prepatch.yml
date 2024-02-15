@@ -12,6 +12,7 @@
        var=opatch_list.stdout_lines
   - name  : Check Db service Status 
     shell : | 
+      ./orastop.sh
       cd /nfs/ora_software/linux/psu/2024_01/36031426/35926646
       opatch prereq CheckConflictAgainstOHWithDetail -ph ./
     tags: install
