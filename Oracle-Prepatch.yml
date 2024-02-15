@@ -11,7 +11,9 @@
   - debug :
        var=opatch_list.stdout_lines
   - name  : Check Db service Status 
-    shell : "ps -ef | grep smon | grep -v grep"
+    shell : | 
+	cd /nfs/ora_software/linux/psu/2024_01/36031426/35926646
+	opatch prereq CheckConflictAgainstOHWithDetail -ph ./
     tags: install
     register: db_status
   - debug : 
