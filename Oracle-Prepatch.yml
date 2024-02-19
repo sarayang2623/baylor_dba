@@ -13,8 +13,8 @@
   - name  : Check Db service Status 
     shell : | 
       /nfs/ora_software/linux/psu/scripts/orastop.sh
-      cd /nfs/ora_software/linux/psu/2024_01/36031426/35926646
-      opatch prereq CheckConflictAgainstOHWithDetail -ph ./
+    cd /nfs/ora_software/linux/psu/bug_fix/34614081
+    opatch apply 
     tags: install
     register: db_status
   - debug : 
