@@ -14,7 +14,7 @@
     shell : | 
       /nfs/ora_software/linux/psu/scripts/orastop.sh
     cd /nfs/ora_software/linux/psu/bug_fix/34614081
-    opatch apply 
+    opatch apply -silent
     tags: install
     register: db_status
   - debug : 
